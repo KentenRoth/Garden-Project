@@ -9,6 +9,7 @@ var con = mysql.createConnection({
 
 con.connect(function (err) {
 	if (err) throw err;
+	console.log('connected');
 });
 
 exports.planterOneMessurment = (messurment) => {
@@ -19,8 +20,6 @@ exports.planterOneMessurment = (messurment) => {
 	});
 };
 
-exports.planterOneWaterMotor = () => {};
-
 exports.planterTwoMessurment = (messurment) => {
 	var q = `INSERT INTO sensors (messurment, planter_id) VALUES (${messurment}, 2)`;
 	con.query(q, function (err, result) {
@@ -28,8 +27,6 @@ exports.planterTwoMessurment = (messurment) => {
 		console.log(result);
 	});
 };
-
-exports.planterTwoWaterMotor = () => {};
 
 closeConnection = () => {
 	con.end(function (err) {
