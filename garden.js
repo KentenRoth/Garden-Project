@@ -29,6 +29,13 @@ waterMotorTwoOff = () => {
 	waterMotorTwo.unexport();
 };
 
+allMotorsOff = () => {
+	waterMotorOne.writeSync(0);
+	waterMotorTwo.writeSync(0);
+	waterMotorOne.unexport();
+	waterMotorTwo.unexport();
+};
+
 // function to get info from sensors
 planterOne = () => {
 	if (!ads1115.busy) {
@@ -40,7 +47,15 @@ planterOne = () => {
 				if (err) {
 					throw err;
 				}
-				console.log(data);
+				if (data > 2000) {
+					waterMotorOneOn();
+					setTimeout(function () {
+						waterMotorOneOff();
+						planterTwo();
+					}, 10000);
+				} else {
+					return planterTwo();
+				}
 			}
 		);
 	}
@@ -56,7 +71,14 @@ PlanterTwo = () => {
 				if ((err, data)) {
 					throw err;
 				}
-				console.log(data);
+				if (data > 2000) {
+					waterMotorTwoOn();
+					setTimeout(function () {
+						waterMotorTwoOff(), allMotorsOff();
+					}, 1000);
+				} else {
+					return allMotorsOff();
+				}
 			}
 		);
 	}
