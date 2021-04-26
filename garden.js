@@ -1,5 +1,9 @@
 var Gpio = require('onoff').Gpio;
 var ads1x15 = require('node-ads1x15'); // This also requires npm module 'CoffeeScript'
+const {
+	planterOneMessurment,
+	planterTwoMessurment,
+} = require('./severAndCalls');
 
 var waterMotorOne = new Gpio(19, 'out');
 var waterMotorTwo = new Gpio(26, 'out');
@@ -48,12 +52,14 @@ planterOne = () => {
 					throw err;
 				}
 				if (data > 2000) {
+					planterOneMessurment(data);
 					waterMotorOneOn();
 					setTimeout(function () {
 						waterMotorOneOff();
 						planterTwo();
-					}, 10000);
+					}, 100);
 				} else {
+					planterOneMessurment(data);
 					return planterTwo();
 				}
 			}
@@ -72,11 +78,13 @@ PlanterTwo = () => {
 					throw err;
 				}
 				if (data > 2000) {
+					planterTwoMessurment(data);
 					waterMotorTwoOn();
 					setTimeout(function () {
 						waterMotorTwoOff(), allMotorsOff();
 					}, 1000);
 				} else {
+					planterTwoMessurment(data);
 					return allMotorsOff();
 				}
 			}
