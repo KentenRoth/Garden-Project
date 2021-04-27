@@ -34,7 +34,27 @@ INSERT INTO sensors (messurment, planter_id)
 INSERT INTO waterMotors (planter_id, sensor_id) 
     VALUES(1, LAST_INSERT_ID())
 
+
+-- Gets last time watered, for what plant, and the messurment it was at
 SELECT plant, messurment, watered FROM waterMotors
     INNER JOIN sensors ON waterMotors.sensor_id = sensors.id
     INNER JOIN planters ON sensors.planter_id = planters.id
-    ORDER BY watered;
+    WHERE waterMotors.planter_id = 1
+    ORDER BY watered DESC LIMIT 1;
+
+    SELECT plant, messurment, watered FROM waterMotors
+    INNER JOIN sensors ON waterMotors.sensor_id = sensors.id
+    INNER JOIN planters ON sensors.planter_id = planters.id
+    WHERE waterMotors.planter_id = 2
+    ORDER BY watered DESC LIMIT 1;
+
+-- Gets the last messurment or each plant
+SELECT plant, messurment, taken FROM sensors
+    INNER JOIN planters on sensors.planter_id = planters.id
+    WHERE  planter_id = 1
+    ORDER BY taken DESC LIMIT 1;
+
+SELECT plant, messurment, taken FROM sensors
+    INNER JOIN planters on sensors.planter_id = planters.id
+    WHERE planter_id = 2
+    ORDER BY taken DESC LIMIT 1
