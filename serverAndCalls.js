@@ -28,7 +28,26 @@ exports.planterTwoMessurment = (messurment) => {
 	});
 };
 
-closeConnection = () => {
+exports.waterMotorOneActivated = () => {
+	var q =
+		'INSERT INTO waterMotors (planter_id, sensor_id) VALUES (1, LAST_INSERT_ID())';
+	con.query(q, function (err, result) {
+		if (err) throw err;
+		return;
+	});
+};
+
+exports.waterMotorTwoActivated = () => {
+	var q =
+		'INSERT INTO waterMotors (planter_id, sensor_id) VALUES (2, LAST_INSERT_ID())';
+	con -
+		query(q, function (err, result) {
+			if (err) throw err;
+			return;
+		});
+};
+
+exports.closeConnection = () => {
 	con.end(function (err) {
 		if (err) throw err;
 		console.log('connection closed');
