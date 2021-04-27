@@ -16,7 +16,7 @@ exports.planterOneMessurment = (messurment) => {
 	var q = `INSERT INTO sensors (messurment, planter_id) VALUES (${messurment}, 1)`;
 	con.query(q, function (err, result) {
 		if (err) throw err;
-		console.log(result);
+		return;
 	});
 };
 
@@ -24,7 +24,7 @@ exports.planterTwoMessurment = (messurment) => {
 	var q = `INSERT INTO sensors (messurment, planter_id) VALUES (${messurment}, 2)`;
 	con.query(q, function (err, result) {
 		if (err) throw err;
-		console.log(result);
+		return;
 	});
 };
 
