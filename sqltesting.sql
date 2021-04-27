@@ -34,3 +34,7 @@ INSERT INTO sensors (messurment, planter_id)
 INSERT INTO waterMotors (planter_id, sensor_id) 
     VALUES(1, LAST_INSERT_ID())
 
+SELECT plant, messurment, watered FROM waterMotors
+    INNER JOIN sensors ON waterMotors.sensor_id = sensors.id
+    INNER JOIN planters ON sensors.planter_id = planters.id
+    ORDER BY watered;
