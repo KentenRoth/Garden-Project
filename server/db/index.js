@@ -9,10 +9,11 @@ var con = mysql.createPool({
 
 let gardendb = {};
 
-gardendb.allWaterMotors = () => {
-	const q = 'SELECT * FROM waterMotors';
+gardendb.sensorsData = (planter_id) => {
+	const q =
+		"SELECT messurment, planter_id, DATE_FORMAT(taken, '%m/%d/%y %H:%i') AS time FROM sensors WHERE planter_id = ? ORDER BY taken DESC LIMIT 1";
 	return new Promise((resolve, reject) => {
-		con.query(q, function (err, results) {
+		con.query(q, [planter_id], function (err, results) {
 			if (err) {
 				return reject(err);
 			}
