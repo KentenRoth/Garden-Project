@@ -25,4 +25,14 @@ router.get('/sensors/:messurment,:planter_id', async (req, res) => {
 	}
 });
 
+router.get('/waterMotors/:planter_id', async (req, res) => {
+	try {
+		let results = await db.waterMotorData(req.params.planter_id);
+		res.json(results);
+	} catch (e) {
+		console.log(e);
+		res.sendStatus(500);
+	}
+});
+
 module.exports = router;
