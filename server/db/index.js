@@ -23,7 +23,7 @@ gardendb.sensorsData = (planter_id) => {
 	});
 };
 
-gardendb.insertIntoSensors = (messurment, planter_id) => {
+gardendb.insertSensorData = (messurment, planter_id) => {
 	const q =
 		'INSERT INTO sensors (messurment, planter_id)\
         VALUES ( ?, ?)';
@@ -44,6 +44,21 @@ gardendb.waterMotorData = (planter_id) => {
         INNER JOIN planters ON sensors.planter_id = planters.id\
         WHERE waterMotors.planter_id = ?\
         ORDER BY watered DESC LIMIT 1";
+
+	return new Promise((resolve, reject) => {
+		con.query(q, [planter_id], function (err, results) {
+			if (err) {
+				return reject(err);
+			}
+			return resolve(results);
+		});
+	});
+};
+
+gardendb.insertWaterData = (planter_id) => {
+	const q =
+		'INSERT INTO waterMotors (planter_id, sensor_id)\
+        VALUES (?, LAST_INSERT_ID())';
 
 	return new Promise((resolve, reject) => {
 		con.query(q, [planter_id], function (err, results) {
