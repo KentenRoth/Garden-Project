@@ -14,7 +14,7 @@ router.get('/:planter_id', async (req, res, next) => {
 
 router.get('/sensors/:messurment,:planter_id', async (req, res) => {
 	try {
-		let results = await db.insertIntoSensors(
+		let results = await db.insertSensorData(
 			req.params.messurment,
 			req.params.planter_id
 		);
