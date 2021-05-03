@@ -17,9 +17,22 @@ var sensorTwo = 1;
 var samplesPerSecond = '250';
 var gain = '4096';
 
+const WebSocket = require('ws');
+
+const socket = new WebSocket('ws://localhost:3000');
+
+socket.addEventListener('open', function (event) {
+	socket.send('garden.js Connected');
+});
+
+socket.addEventListener('message', function (event) {
+	console.log('message from server ', event.data);
+});
+
 waterMotorOneOn = () => {
 	waterMotorOne.writeSync(1);
 	waterMotorOneActivated();
+	socket.send('Hello from garden.js');
 };
 
 waterMotorOneOff = () => {
