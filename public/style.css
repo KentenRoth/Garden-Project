@@ -1,3 +1,18 @@
 body {
 	background: black;
+	color: white;
+}
+
+.title {
+	text-align: center;
+}
+
+.planterTitle {
+	text-align: center;
+}
+
+.planterOne,
+.planterTwo {
+	margin: 40px;
+	text-align: center;
 }
