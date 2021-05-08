@@ -1,16 +1,16 @@
-var Gpio = require('onoff').Gpio;
-var ads1x15 = require('node-ads1x15'); // This also requires npm module 'CoffeeScript'
+// var Gpio = require('onoff').Gpio;
+// var ads1x15 = require('node-ads1x15'); // This also requires npm module 'CoffeeScript'
 var axios = require('axios');
 
-var waterMotorOne = new Gpio(19, 'out');
-var waterMotorTwo = new Gpio(26, 'out');
+// var waterMotorOne = new Gpio(19, 'out');
+// var waterMotorTwo = new Gpio(26, 'out');
 
-var ads1115 = new ads1x15(1);
-var sensorOne = 0;
-var sensorTwo = 1;
+// var ads1115 = new ads1x15(1);
+// var sensorOne = 0;
+// var sensorTwo = 1;
 
-var samplesPerSecond = '250';
-var gain = '4096';
+// var samplesPerSecond = '250';
+// var gain = '4096';
 
 const WebSocket = require('ws');
 
@@ -26,11 +26,15 @@ socket.addEventListener('message', function (event) {
 
 const url = 'http://localhost:3000/garden';
 measurementData = (mess, id) => {
-	axios.get(url + `/sensors/${mess},${id}`);
+	axios
+		.get(url + `/sensors/${mess},${id}`)
+		.then((data) => socket.send(`measurement + ${id}`));
 };
 
 wateringData = (id) => {
-	axios.post(url + `/waterMotors/${id}`);
+	axios
+		.post(url + `/waterMotors/${id}`)
+		.then((data) => socket.send(`watering + ${id}`));
 };
 
 waterMotorOneOn = () => {
@@ -88,14 +92,14 @@ planterOne = () => {
 	}
 };
 
-PlanterTwo = () => {
+planterTwo = () => {
 	if (!ads1115.busy) {
 		ads1115.readADCSingleEnded(
 			sensorTwo,
 			gain,
 			samplesPerSecond,
 			function (err, data) {
-				if ((err, data)) {
+				if (err) {
 					throw err;
 				}
 				if (data > 2000) {
@@ -112,3 +116,6 @@ PlanterTwo = () => {
 		);
 	}
 };
+
+measurementData(1143.22, 1);
+measurementData(1654.21, 2);

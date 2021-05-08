@@ -6,7 +6,7 @@ socket.addEventListener('open', function (event) {
 });
 
 socket.addEventListener('message', function (event) {
-	console.log('message from server ', event.data);
+	console.log(event.data);
 });
 
 getWateringData = (num) => {
