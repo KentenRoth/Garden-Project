@@ -7,6 +7,7 @@ socket.addEventListener('open', function (event) {
 
 socket.addEventListener('message', function (event) {
 	console.log(event.data);
+	updateFrontEnd(event.data);
 });
 
 getWateringData = (num) => {
@@ -49,6 +50,38 @@ setWatered = (watered, num) => {
 	const wateredDate = document.createElement('p');
 	wateredDate.textContent = `Last Watered: ${watered}`;
 	wateredPlanter.appendChild(wateredDate);
+};
+
+clearMeasurementData = (id) => {
+	document.getElementById(`measurement${id}`).innerHTML = '';
+};
+
+clearWateredData = (id) => {
+	document.getElementById(`planted${id}`).innerHTML = '';
+	document.getElementById(`watered${id}`).innerHTML = '';
+};
+
+updateFrontEnd = (param) => {
+	switch (param) {
+		case 'measurement + 1':
+			clearMeasurementData(1);
+			getSensorData(1);
+			break;
+		case 'measurement + 2':
+			clearMeasurementData(2);
+			getSensorData(2);
+			break;
+		case 'watering + 1':
+			clearWateredData(1);
+			getWateringData(1);
+			break;
+		case 'watering + 2':
+			clearWateredData(2);
+			getWateringData(2);
+			break;
+		default:
+			return console.log(param);
+	}
 };
 
 getWateringData(1);
