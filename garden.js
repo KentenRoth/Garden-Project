@@ -1,11 +1,6 @@
 var Gpio = require('onoff').Gpio;
 var ads1x15 = require('node-ads1x15'); // This also requires npm module 'CoffeeScript'
-const {
-	planterOneMessurment,
-	planterTwoMessurment,
-	waterMotorOneActivated,
-	waterMotorTwoActivated,
-} = require('./serverAndCalls');
+var axios = require('axios');
 
 var waterMotorOne = new Gpio(19, 'out');
 var waterMotorTwo = new Gpio(26, 'out');
@@ -29,32 +24,37 @@ socket.addEventListener('message', function (event) {
 	console.log('message from server ', event.data);
 });
 
+const url = 'http://localhost:3000/garden';
+measurementData = (mess, id) => {
+	axios.get(url + `/sensors/${mess},${id}`);
+};
+
+wateringData = (id) => {
+	axios.post(url + `/waterMotors/${id}`);
+};
+
 waterMotorOneOn = () => {
-	waterMotorOne.writeSync(1);
-	waterMotorOneActivated();
+	waterMotorOne.writeSync(0);
 	socket.send('Hello from garden.js');
 };
 
 waterMotorOneOff = () => {
-	waterMotorOne.writeSync(0);
-	waterMotorOne.unexport();
+	wateringData(1);
+	waterMotorOne.writeSync(1);
 };
 
 waterMotorTwoOn = () => {
-	waterMotorTwo.writeSync(1);
-	waterMotorTwoActivated();
+	waterMotorTwo.writeSync(0);
 };
 
 waterMotorTwoOff = () => {
-	waterMotorTwo.writeSync(0);
-	waterMotorTwo.unexport();
+	wateringData(2);
+	waterMotorTwo.writeSync(1);
 };
 
 allMotorsOff = () => {
-	waterMotorOne.writeSync(0);
-	waterMotorTwo.writeSync(0);
-	waterMotorOne.unexport();
-	waterMotorTwo.unexport();
+	waterMotorOne.writeSync(1);
+	waterMotorTwo.writeSync(1);
 };
 
 // function to get info from sensors
@@ -69,15 +69,19 @@ planterOne = () => {
 					throw err;
 				}
 				if (data > 2000) {
-					planterOneMessurment(data);
+					measurementData(data, 1);
 					waterMotorOneOn();
 					setTimeout(function () {
 						waterMotorOneOff();
-						planterTwo();
+						setTimeout(function () {
+							planterTwo();
+						}, 2000);
 					}, 100);
 				} else {
-					planterOneMessurment(data);
-					return planterTwo();
+					measurementData(data, 1);
+					return setTimeout(function () {
+						planterTwo();
+					}, 2000);
 				}
 			}
 		);
@@ -95,13 +99,13 @@ PlanterTwo = () => {
 					throw err;
 				}
 				if (data > 2000) {
-					planterTwoMessurment(data);
+					measurementData(data, 2);
 					waterMotorTwoOn();
 					setTimeout(function () {
 						waterMotorTwoOff(), allMotorsOff();
 					}, 1000);
 				} else {
-					planterTwoMessurment(data);
+					measurementData(data, 2);
 					return allMotorsOff();
 				}
 			}
