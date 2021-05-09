@@ -35,7 +35,7 @@ router.get('/waterMotors/:planter_id', async (req, res) => {
 	}
 });
 
-router.post('/waterMotors/:planter_id', async (req, res) => {
+router.get('/waterMotorsInsert/:planter_id', async (req, res) => {
 	try {
 		let results = await db.insertWaterData(req.params.planter_id);
 		res.json(results);
