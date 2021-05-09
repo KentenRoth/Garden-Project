@@ -33,13 +33,12 @@ measurementData = (mess, id) => {
 
 wateringData = (id) => {
 	axios
-		.post(url + `/waterMotors/${id}`)
+		.get(url + `/waterMotorsInsert/${id}`)
 		.then((data) => socket.send(`watering + ${id}`));
 };
 
 waterMotorOneOn = () => {
 	waterMotorOne.writeSync(0);
-	socket.send('Hello from garden.js');
 };
 
 waterMotorOneOff = () => {
