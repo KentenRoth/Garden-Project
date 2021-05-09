@@ -23,6 +23,7 @@ gardendb.sensorsData = (planter_id) => {
 	});
 };
 
+let lastID;
 gardendb.insertSensorData = (messurment, planter_id) => {
 	const q =
 		'INSERT INTO sensors (messurment, planter_id)\
@@ -32,6 +33,7 @@ gardendb.insertSensorData = (messurment, planter_id) => {
 			if (err) {
 				return reject(err);
 			}
+			lastID = results.insertId;
 			return resolve(results);
 		});
 	});
@@ -56,9 +58,9 @@ gardendb.waterMotorData = (planter_id) => {
 };
 
 gardendb.insertWaterData = (planter_id) => {
-	const q =
-		'INSERT INTO waterMotors (planter_id, sensor_id)\
-        VALUES (?, LAST_INSERT_ID())';
+	console.log(lastID);
+	const q = `INSERT INTO waterMotors (planter_id, sensor_id)\
+        VALUES (?, ${lastID})`;
 
 	return new Promise((resolve, reject) => {
 		con.query(q, [planter_id], function (err, results) {
@@ -69,5 +71,7 @@ gardendb.insertWaterData = (planter_id) => {
 		});
 	});
 };
+
+// Fix spelling issue messurment is spelled measurement
 
 module.exports = gardendb;
