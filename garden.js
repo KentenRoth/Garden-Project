@@ -76,10 +76,10 @@ planterOne = () => {
 					waterMotorOneOn();
 					setTimeout(function () {
 						waterMotorOneOff();
-						setTimeout(function () {
-							planterTwo();
-						}, 2000);
-					}, 100);
+					}, 20000);
+					setTimeout(function () {
+						planterTwo();
+					}, 22000);
 				} else {
 					measurementData(data, 1);
 					return setTimeout(function () {
@@ -106,7 +106,7 @@ planterTwo = () => {
 					waterMotorTwoOn();
 					setTimeout(function () {
 						waterMotorTwoOff(), allMotorsOff();
-					}, 1000);
+					}, 2000);
 				} else {
 					measurementData(data, 2);
 					return allMotorsOff();
