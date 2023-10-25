@@ -14,6 +14,6 @@ DHT22 - Temp and humidity
 
 Capacitive Soil Moisture Sensor v1.2 - Soil moisture levels
 
-ADS1115 - Convers the signal from the soil moisture sensor
+ADS1115 - Converts the signal from the soil moisture sensor
 
 4 Relay Module - Connects to the water motors
