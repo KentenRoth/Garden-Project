@@ -41,4 +41,15 @@ router.post('/soil/:levels,:planter', async (req, res) => {
 	}
 });
 
+router.post('/watering/:planter', async (req, res) => {
+	console.log(req.params);
+	try {
+		let results = await db.insertWateringData(req.params.planter);
+		res.json(results);
+	} catch (e) {
+		console.log(e);
+		res.sendStatus(500);
+	}
+});
+
 module.exports = router;

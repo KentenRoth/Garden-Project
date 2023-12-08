@@ -49,4 +49,18 @@ gardendb.insertSoilData = (measurment, planter) => {
 	});
 };
 
+gardendb.insertWateringData = (planter) => {
+	const q =
+		'INSERT INTO watering (soil_id, garden_id) SELECT s.id AS soil_id, g.id AS garden_id FROM garden g JOIN soil s ON g.id = s.garden_id WHERE g.planter = ? AND g.harvested = false ORDER BY s.measured DESC LIMIT 1;';
+	return new Promise((resolve, reject) => {
+		con.query(q, [planter], function (err, results) {
+			if (err) {
+				console.log(err);
+				return reject(err);
+			}
+			return resolve(results);
+		});
+	});
+};
+
 module.exports = gardendb;
