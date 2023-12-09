@@ -9,6 +9,7 @@ let con = mysql.createPool({
 
 let gardendb = {};
 
+// Temperature Table
 gardendb.insertTempData = (temp, humidity) => {
 	const q = 'INSERT INTO temperature (temp, humidity) VALUES (?, ?)';
 	return new Promise((resolve, reject) => {
@@ -22,6 +23,20 @@ gardendb.insertTempData = (temp, humidity) => {
 	});
 };
 
+gardendb.getTemperatureData = () => {
+	const q = 'SELECT * FROM temperature ORDER BY created_at DESC LIMIT 24';
+	return new Promise((resolve, reject) => {
+		con.query(q, function (err, results) {
+			if (err) {
+				console.log(err);
+				return reject(err);
+			}
+			return resolve(results);
+		});
+	});
+};
+
+// Garden Table
 gardendb.insertPlanterData = (plant, planter) => {
 	const q = 'INSERT INTO garden (plant, planter) VALUES (?, ?)';
 	return new Promise((resolve, reject) => {
@@ -35,6 +50,7 @@ gardendb.insertPlanterData = (plant, planter) => {
 	});
 };
 
+// Soil Table
 gardendb.insertSoilData = (measurment, planter) => {
 	const q =
 		'INSERT INTO soil (garden_id, measurement) SELECT id, ? FROM garden WHERE planter = ? AND harvested = false';
@@ -49,6 +65,7 @@ gardendb.insertSoilData = (measurment, planter) => {
 	});
 };
 
+// Watering Table
 gardendb.insertWateringData = (planter) => {
 	const q =
 		'INSERT INTO watering (soil_id, garden_id) SELECT s.id AS soil_id, g.id AS garden_id FROM garden g JOIN soil s ON g.id = s.garden_id WHERE g.planter = ? AND g.harvested = false ORDER BY s.measured DESC LIMIT 1;';

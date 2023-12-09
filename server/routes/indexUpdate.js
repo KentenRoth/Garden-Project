@@ -2,7 +2,9 @@ const express = require('express');
 const router = express.Router();
 const db = require('./db');
 
+// Temperature Table
 router.post('/temperature/:temp,:humidity', async (req, res) => {
+	console.log(req.params);
 	try {
 		let results = await db.insertTempData(
 			req.params.temp,
@@ -15,7 +17,19 @@ router.post('/temperature/:temp,:humidity', async (req, res) => {
 	}
 });
 
+router.get('/temperature', async (req, res) => {
+	try {
+		let results = await db.getTemperatureData();
+		res.json(results);
+	} catch (e) {
+		console.log(e);
+		res.sendStatus(500);
+	}
+});
+
+// Garden Table
 router.post('/garden/:plant,:planter', async (req, res) => {
+	console.log(req.params);
 	try {
 		let results = await db.insertPlanterData(
 			req.params.plant,
@@ -28,7 +42,9 @@ router.post('/garden/:plant,:planter', async (req, res) => {
 	}
 });
 
+// Soil Table
 router.post('/soil/:levels,:planter', async (req, res) => {
+	console.log(req.params);
 	try {
 		let results = await db.insertSoilData(
 			req.params.levels,
@@ -41,6 +57,7 @@ router.post('/soil/:levels,:planter', async (req, res) => {
 	}
 });
 
+// Watering Table
 router.post('/watering/:planter', async (req, res) => {
 	console.log(req.params);
 	try {

@@ -71,6 +71,12 @@ const sendWateringTime = (planter) => {
 		);
 };
 
+const getTemperatureData = () => {
+	axios
+		.get(url + '/temperature')
+		.then((results) => console.log(results.data));
+};
+
 getTempAndHumidity();
 
 getSoilMoisture()
