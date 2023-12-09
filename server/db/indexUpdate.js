@@ -50,6 +50,32 @@ gardendb.insertPlanterData = (plant, planter) => {
 	});
 };
 
+gardendb.getNonharvestedPlanters = () => {
+	const q = 'SELECT * FROM garden WHERE harvested = 0';
+	return new Promise((resolve, reject) => {
+		con.query(q, function (err, results) {
+			if (err) {
+				console.log(err);
+				return reject(err);
+			}
+			return resolve(results);
+		});
+	});
+};
+
+gardendb.getSingleGarden = (planter) => {
+	const q = 'SELECT * FROM garden WHERE planter = ? AND harvested = 0';
+	return new Promise((resolve, reject) => {
+		con.query(q, [planter], function (err, results) {
+			if (err) {
+				console.log(err);
+				return reject(err);
+			}
+			return resolve(results);
+		});
+	});
+};
+
 // Soil Table
 gardendb.insertSoilData = (measurment, planter) => {
 	const q =

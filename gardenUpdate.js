@@ -77,6 +77,16 @@ const getTemperatureData = () => {
 		.then((results) => console.log(results.data));
 };
 
+const getSingleNonharvestedGarden = (planter) => {
+	axios
+		.get(url + `/garden/${planter}`)
+		.then((results) => console.log(results.data));
+};
+
+const getAllNonharvestedGardens = () => {
+	axios.get(url + `/garden`).then((results) => console.log(results.data));
+};
+
 getTempAndHumidity();
 
 getSoilMoisture()

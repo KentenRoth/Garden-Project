@@ -42,6 +42,27 @@ router.post('/garden/:plant,:planter', async (req, res) => {
 	}
 });
 
+router.get('/garden', async (req, res) => {
+	try {
+		let results = await db.getNonharvestedPlanters();
+		res.json(results);
+	} catch (e) {
+		console.log(e);
+		res.sendStatus(500);
+	}
+});
+
+router.get('/garden/:planter', async (req, res) => {
+	console.log(req.params);
+	try {
+		let results = await db.getSingleGarden(req.params.planter);
+		res.json(results);
+	} catch (e) {
+		console.log(e);
+		res.sendStatus(500);
+	}
+});
+
 // Soil Table
 router.post('/soil/:levels,:planter', async (req, res) => {
 	console.log(req.params);
