@@ -87,6 +87,24 @@ const getAllNonharvestedGardens = () => {
 	axios.get(url + `/garden`).then((results) => console.log(results.data));
 };
 
+const getSoilMoistureForPlanter = (planter) => {
+	axios
+		.get(url + `/soil/${planter}`)
+		.then((results) => console.log(results.data));
+};
+
+const getWateringDataForPlanter = (planter) => {
+	axios
+		.get(url + `/watering/${planter}`)
+		.then((results) => console.log(results.data));
+};
+
+const getSinglePlanterNonHarvestedData = (planter) => {
+	axios
+		.get(url + `/planter/${planter}`)
+		.then((results) => console.log(results.data));
+};
+
 getTempAndHumidity();
 
 getSoilMoisture()

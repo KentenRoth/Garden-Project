@@ -78,11 +78,45 @@ router.post('/soil/:levels,:planter', async (req, res) => {
 	}
 });
 
+router.get('/soil/:planter', async (req, res) => {
+	console.log(req.params);
+	try {
+		let results = await db.getSoilMoistureForPlanter(req.params.planter);
+		res.json(results);
+	} catch (e) {
+		console.log(e);
+		res.sendStatus(500);
+	}
+});
+
 // Watering Table
 router.post('/watering/:planter', async (req, res) => {
 	console.log(req.params);
 	try {
 		let results = await db.insertWateringData(req.params.planter);
+		res.json(results);
+	} catch (e) {
+		console.log(e);
+		res.sendStatus(500);
+	}
+});
+
+router.get('/watering/:planter', async (req, res) => {
+	console.log(req.params);
+	try {
+		let results = await db.getWateringDataForPlanter(req.params.planter);
+		res.json(results);
+	} catch (e) {
+		console.log(e);
+		res.sendStatus(500);
+	}
+});
+
+// Getting all data for a single planter
+router.get('/planter/:planter', async (req, res) => {
+	console.log(req.params);
+	try {
+		let results = await db.getSingleNonHarvestedGarden(req.params.planter);
 		res.json(results);
 	} catch (e) {
 		console.log(e);
